@@ -13,11 +13,15 @@ def get_annual_report(stock_num):
                              "keyword":"关键字",
                              "xxfcbj":""
                          })
-    text = re.findall(r"[(](.*?)[)]", page.text)[0]
     try:
+        text = re.findall(r"[(](.*?)[)]", page.text)[0]
         title = json.loads(text)[0]["listInfo"]["content"][0]["disclosureTitle"]
     except json.decoder.JSONDecodeError:
         with open("..\\data\\neeq_annual_report_2018H1\\{}_failed.txt".format(stock_num), "w") as f:
+            f.write(stock_num)
+        return
+    except IndexError:
+        with open("..\\data\\neeq_annual_report_2018H1\\{}_notfind.txt".format(stock_num), "w") as f:
             f.write(stock_num)
         return
     title = title.replace(":","_").replace("*","_")
@@ -39,7 +43,8 @@ def get_all_stock():
     page0 = requests.get("http://www.neeq.com.cn/nqxxController/nqxx.do?callback=jQuery1830483533568956642_1550473485680&page=0&typejb=T&xxzqdm=&xxzrlx=&xxhyzl=&xxssdq=&sortfield=xxzqdm&sorttype=asc&dicXxzbqs=&xxfcbj=&_=1550473497322")
     text = re.findall(r"[(](.*?)[)]", page0.text)[0]
     totalPages = json.loads(text)[0]["totalPages"]
-    for page_num in range(totalPages):
+    for page_num in range(106, totalPages): # 断点续传..
+        print("---{}---".format(page_num))
         page = requests.get("http://www.neeq.com.cn/nqxxController/nqxx.do?callback=jQuery1830483533568956642_1550473485680&page={}&typejb=T&xxzqdm=&xxzrlx=&xxhyzl=&xxssdq=&sortfield=xxzqdm&sorttype=asc&dicXxzbqs=&xxfcbj=&_=1550473497322".format(page_num))
         text = re.findall(r"[(](.*?)[)]", page.text)[0]
         contents = json.loads(text)[0]["content"]
