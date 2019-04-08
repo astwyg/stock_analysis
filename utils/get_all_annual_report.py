@@ -15,7 +15,7 @@ def download_annual_report(stock_num):
     page1.encoding = "gb2312"
     page1 = BeautifulSoup(page1.text)
     if "英文" in page1.find_all("div", class_="datelist")[0].contents[0].contents[1].text:
-        next_url = page1.find_all("div", class_="datelist")[0].contents[1].contents[4]["href"] # bypass <br> and text.
+        next_url = page1.find_all("div", class_="datelist")[0].contents[0].contents[4]["href"] # bypass <br> and text.
     else:
         next_url = page1.find_all("div", class_="datelist")[0].contents[0].contents[1]["href"]
     page2 = requests.get("http://vip.stock.finance.sina.com.cn/"+next_url)
@@ -31,7 +31,7 @@ def download_annual_report(stock_num):
 
 if __name__ == "__main__":
     all_stock = get_all_stock_num()
-    for stock in all_stock:  # 改起点位置
+    for stock in all_stock[3198:]:  # 改起点位置
         try:
             download_annual_report(stock.split(".")[0])
         except IndexError:
