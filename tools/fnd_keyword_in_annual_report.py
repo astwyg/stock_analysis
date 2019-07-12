@@ -1,8 +1,6 @@
 import os
 
-path = "..\\data\\annual_report_2017_txt"
-
-def find_keyword(keyword):
+def find_keyword(keyword, path):
     for root, dirs, files in os.walk(path):
         for f in files:
             with open(os.path.join(path, f),"r", encoding="utf-8") as fp:
@@ -14,4 +12,4 @@ def find_keyword(keyword):
 
 if __name__ == "__main__":
     keyword = input("输入关键字:")
-    find_keyword(keyword)
+    find_keyword(keyword, path = "..\\data\\annual_report_2017_txt")
