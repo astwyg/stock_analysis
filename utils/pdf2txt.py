@@ -11,11 +11,15 @@ def convert():
             cnt = cnt + 1
             print("{}/{}".format(cnt, len(files)))
             if f.endswith("pdf"):
-                with pdfplumber.open(os.path.join(pdf_path, f)) as pdf:
-                    txt_filename = f.split(".")[-2] + ".txt"
-                    with codecs.open(os.path.join(txt_path, txt_filename), "w", encoding="utf-8") as new_f:
-                        for page in pdf.pages:
-                            new_f.write(page.extract_text())
+                try:
+                    with pdfplumber.open(os.path.join(pdf_path, f)) as pdf:
+                        txt_filename = f.split(".")[-2] + ".txt"
+                        with codecs.open(os.path.join(txt_path, txt_filename), "w", encoding="utf-8") as new_f:
+                            for page in pdf.pages:
+                                new_f.write(page.extract_text())
+                except:
+                    print("one failed")
+
 
 if __name__ == "__main__":
     convert()
