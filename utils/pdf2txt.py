@@ -1,15 +1,17 @@
 import os, codecs
+import multiprocessing
 import pdfplumber
 
 pdf_path = "..\\data\\neeq_annual_report_2018H1"
 txt_path = "..\\data\\neeq_annual_report_2018H1_txt"
 
-def convert():
+
+def convert(start, end):
     cnt = 0
     for root, dirs, files in os.walk(pdf_path):
-        for f in files:
+        for f in files[start:end]:
             cnt = cnt + 1
-            print("{}/{}".format(cnt, len(files)))
+            print("{}/({}-{})".format(cnt, start, end))
             if f.endswith("pdf"):
                 try:
                     with pdfplumber.open(os.path.join(pdf_path, f)) as pdf:
@@ -22,4 +24,7 @@ def convert():
 
 
 if __name__ == "__main__":
-    convert()
+    total = 10472 - 1100
+    for i in range(4):
+        t = multiprocessing.Process(target=convert, args=(int(1100+(10472-1100)/4*i),int((10472-1100)/4*(i+1)+1100)))
+        t.start()
