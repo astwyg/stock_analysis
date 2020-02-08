@@ -12,4 +12,4 @@ def find_keyword(keyword, path):
 
 if __name__ == "__main__":
     keyword = input("输入关键字:")
-    find_keyword(keyword, path = "..\\data\\annual_report_2017_txt")
+    find_keyword(keyword, path = "..\\data\\annual_report_2018_txt_new")

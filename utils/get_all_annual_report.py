@@ -24,14 +24,14 @@ def download_annual_report(stock_num):
     content = page2.find_all("div", class_="graybgH2")[0].contents[1]
     name = page2.find_all("th",style="text-align:center")[0].contents[0].replace("\t","")
     name = name.replace("*","").replace("?","")
-    with open("..\\data\\annual_report_2018_txt\\{}.txt".format(stock_num+"_"+name),"w", encoding='utf-8') as f:
+    with open("..\\data\\annual_report_2018_txt_new\\{}.txt".format(stock_num+"_"+name),"w", encoding='utf-8') as f:
         f.write(str(content))
 
 
 
 if __name__ == "__main__":
     all_stock = get_all_stock_num()
-    for stock in all_stock[3198:]:  # 改起点位置
+    for stock in all_stock[1170:]:  # 改起点位置
         try:
             download_annual_report(stock.split(".")[0])
         except IndexError:
